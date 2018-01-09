@@ -4,6 +4,7 @@ import numpy as np
 import re
 import nltk
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.ensemble import RandomForestClassifier as RFC
 
 train = pd.read_csv("nlp_data/labeledTrainData.tsv", header=0, \
                     delimiter="\t", quoting=3)
@@ -52,4 +53,12 @@ train_data_features = vectorizer.fit_transform(clean_train_reviews)
 
 #convert result to array
 train_data_features = train_data_features.toarray()
+
+vocab = vectorizer.get_feature_names()
+print("Training the random forest...")
+#inisialisasi random forest
+forest = RFC(n_estimators = 100)
+
+#memasukkan data kedalam random forest
+forest = forest.fit(train_data_features, train["sentiment"] )
     
